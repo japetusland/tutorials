@@ -1,0 +1,31 @@
+<?xml version = "1.0" encoding = "UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns = "http://www.w3.org/1999/xhtml"   
+   xmlns:h = "http://java.sun.com/jsf/html"
+   xmlns:ui = "http://java.sun.com/jsf/facelets"> 
+   
+   <h:head></h:head>
+   <h:body style="height:100%"> 
+      <div style ="height:10%">
+         <ui:insert name = "header" >
+         	<input type="button" value="logout" />
+         </ui:insert> 
+      </div>
+      <br/>
+      
+      <div style = "height:80%">
+         <ui:insert name = "content" >
+         </ui:insert>    
+      </div>
+      <br/>
+      
+      <div style = "height:10%">
+         <ui:insert name = "footer" >
+         	Java Security Api tutorial
+         </ui:insert>
+      </div>
+   
+   </h:body>
+</html>

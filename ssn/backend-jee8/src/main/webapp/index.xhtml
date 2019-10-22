@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:f="http://xmlns.jcp.org/jsf/core"
+	xmlns:h="http://xmlns.jcp.org/jsf/html"
+	xmlns:jsf="http://xmlns.jcp.org/jsf"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	template="layout.xhtml">
+
+	<ui:define name="header">
+		<h3 style="text-align: center">Simple Social Network</h3>
+	</ui:define>
+	
+	<ui:define name="content">
+		<hr />
+		<div style="text-align: center;">
+			<h:link outcome="#{spa.goToReact()}" target="_blank" styleClass="btn btn-secondary mr-1">
+				<h:graphicImage library="images" name="react.svg" height="24" />
+				<span>React</span>
+			</h:link>
+			<h:link outcome="#{spa.goToAngular()}" target="_blank" styleClass="btn btn-secondary">
+				<h:graphicImage library="images" name="angular.svg" height="24" />
+				<span>Angular</span>
+			</h:link>
+		</div>
+		<hr />
+	</ui:define>
+	
+</ui:composition>

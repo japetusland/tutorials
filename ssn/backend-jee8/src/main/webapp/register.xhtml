@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:f="http://xmlns.jcp.org/jsf/core"
+	xmlns:h="http://xmlns.jcp.org/jsf/html"
+	xmlns:jsf="http://xmlns.jcp.org/jsf"
+	xmlns:ui="http://java.sun.com/jsf/facelets" template="layout.xhtml">
+	
+	<ui:define name="header">
+		<h3 style="text-align: center">#{langMessages['RegisterNewUser']}</h3>
+	</ui:define>
+	
+	<ui:define name="content">
+		<h:form>
+			<div class="form-group">
+				<label for="email">Email:</label>
+				<input type="text" jsf:id="email" class="form-control"
+					jsf:value="#{registration.email}" jsf:required="true"
+					jsf:validator="#{registration.validateEmails}">
+					<f:validator validatorId="com.giapyland.ssn.emailValidator" />
+				</input>
+				<h:message for="email" errorClass="text-danger" />
+			</div>
+			<div class="form-group">
+				<label for="confirmEmail">#{langMessages['confirm']} Email:</label>
+				<input type="text" class="form-control"
+					jsf:id="confirmEmail" jsf:value="#{registration.confirmEmail}"
+					jsf:required="true">
+					<f:validator validatorId="com.giapyland.ssn.emailValidator" />
+				</input>
+				<h:message for="confirmEmail" errorClass="text-danger" />
+			</div>
+			<div class="form-group">
+				<label for="password">Password:</label>
+				<input type="password" class="form-control"
+					jsf:id="password" jsf:value="#{registration.password}"
+					jsf:required="true"
+					jsf:validator="#{registration.validatePasswords}">
+					<f:validator validatorId="com.giapyland.ssn.passwordValidator" />
+				</input>
+				<h:message for="password" errorClass="text-danger" />
+			</div>
+			<div class="form-group">
+				<label for="confirmPassword">#{langMessages['confirm']} Password:</label>
+				<input type="password" class="form-control" jsf:id="confirmPassword"
+					jsf:value="#{registration.confirmPassword}" jsf:required="true">
+					<f:validator validatorId="com.giapyland.ssn.passwordValidator" />
+				</input>
+				<h:message for="confirmPassword" errorClass="text-danger" />
+			</div>
+			<div class="form-group">
+				<input type="submit" jsf:id="Register"
+					jsf:action="#{registration.register()}"
+					value="#{langMessages['register']}"
+					class="btn btn-success" />
+			</div>
+			<div class="form-group">
+				<h:messages globalOnly="true" errorClass="alert alert-danger" />
+			</div>
+		</h:form>
+	</ui:define>
+	
+</ui:composition>

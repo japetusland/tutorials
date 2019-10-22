@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:th="http://www.thymeleaf.org">
+
+	<head th:fragment="head(styles, scripts)">
+		<title>Simple Social Network</title>
+		<base th:href="@{/}" />
+		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+		
+		<meta th:name="_csrf" th:content="${_csrf.token}" />
+		<meta th:name="_csrf_header" th:content="${_csrf.headerName}" />
+		
+		<link rel="shortcut icon" th:href="@{/favicon.ico}" />
+		
+		<link rel="stylesheet" type="text/css" th:href="@{css/Site.css}" />
+		<link rel="stylesheet" type="text/css" th:href="@{css/bootstrap.min.css}" />
+		<th:block th:if="${styles != null}">
+			<th:block th:replace="${styles}" />
+		</th:block>
+		
+		<script type="text/javascript" th:src="@{js/jquery-3.4.0.min.js}"></script>
+		<script type="text/javascript" th:src="@{js/bootstrap.min.js}"></script>
+		<th:block th:if="${scripts != null}">
+			<th:block th:replace="${scripts}" />
+		</th:block>
+	</head>
+	
+	<body style="height:100%" class="container body-content">
+		<div style="height: 10%" th:fragment="header(headers)">
+			<div>
+				<div style="text-align: right;">
+					<th:block th:if="${user != null}">
+						<p th:text="${user}" />
+						<form method="POST" th:action="@{/logout}">
+							<input type="submit"
+								th:value="#{logout}"
+								class="btn btn-dark" />
+						</form>
+					</th:block>
+					<th:block th:if="${user == null}">
+						<a href="login" class="btn btn-warning mr-1" th:text="#{login}"></a>
+						<a href="registration" class="btn btn-danger" th:text="#{register}"></a>
+					</th:block>
+				</div>
+				<th:block th:if="${headers != null}">
+					<th:block th:replace="${headers}" />
+				</th:block>
+			</div>
+		</div>
+		<br />
+		<div th:fragment="content" style="height: 80%;"></div>
+		<br />
+		<div th:fragment="footer" style="height: 10%"></div>
+	</body>
+
+</html>

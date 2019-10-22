@@ -1,0 +1,30 @@
+<!DOCTYPE HTML>
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:th="http://www.thymeleaf.org">
+	
+	<head>
+		<meta charset="utf-8" />
+		<title>Amgular Frontend</title>
+		<base th:href="@{/angular}" />
+		<meta name="viewport" content="width=device-width, initial-scale=1" />
+		<link href="https://fonts.googleapis.com/css?family=Roboto:300,400,500&display=swap" rel="stylesheet"/>
+		<link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet"/>
+		<link rel="stylesheet" th:href="@{/js/angular-app/styles.css}" />
+	</head>
+
+	<body>
+		<div id="initialDataFromBackend" style="display: none;"
+			th:attr="data-logged-user=${initialData.getLoggedUser()},
+					data-friends=${initialData.getFriends()},
+					data-posts=${initialData.getPosts()}">
+		</div>
+		<app-root></app-root>
+		<script th:src="@{/js/angular-app/polyfills-es5.js}" nomodule defer></script>
+		<script th:src="@{/js/angular-app/polyfills-es2015.js}" type="module"></script>
+		<script th:src="@{/js/angular-app/runtime-es2015.js}" type="module"></script>
+		<script th:src="@{/js/angular-app/main-es2015.js}" type="module"></script>
+		<script th:src="@{/js/angular-app/runtime-es5.js}" nomodule defer></script>
+		<script th:src="@{/js/angular-app/main-es5.js}" nomodule defer></script>
+	</body>
+	
+</html>

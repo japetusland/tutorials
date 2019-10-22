@@ -1,0 +1,19 @@
+@import '~@angular/material/theming';
+
+@include mat-core();
+
+html, body { height: 100%; }
+body { margin: 0; }
+
+.background-grey-100 {
+    background-color: map-get($mat-grey,100);
+}
+
+.background-grey-200 {
+    background-color: map-get($mat-grey,200);
+}
+
+.background-blue-800 {
+    background-color: map-get($mat-blue,800);
+}
+

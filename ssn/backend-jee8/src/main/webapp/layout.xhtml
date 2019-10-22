@@ -1,0 +1,43 @@
+<?xml version = "1.0" encoding = "UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
+	"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:jsf="http://xmlns.jcp.org/jsf">
+
+	<h:head>
+		<title>Simple Social Network</title>
+		<base href="#{request.contextPath}/" />
+		<h:outputStylesheet library="css" name="Site.css" />
+		<h:outputStylesheet library="css" name="bootstrap.min.css" />
+		<h:outputScript library="js" name="jquery-3.4.0.min.js" />
+		<h:outputScript library="js" name="bootstrap.min.js" />
+		<ui:insert name="html_head" />
+	</h:head>
+	
+	<h:body style="height:100%" class="container body-content">
+		<div style="height: 10%">
+			<div style="text-align: right;">
+				<h:form rendered="#{not empty request.remoteUser}">
+					<p>${request.remoteUser}</p>
+					<h:commandLink id="logoutLink"
+						action="#{login.logout()}"
+						value="#{langMessages['logout']}"
+						class="btn btn-dark">
+					</h:commandLink>
+				</h:form>
+				<a jsf:outcome="login" jsf:rendered="#{empty request.remoteUser}" class="btn btn-warning mr-1">#{langMessages['login']}</a>
+				<a jsf:outcome="register" jsf:rendered="#{empty request.remoteUser}" class="btn btn-danger">#{langMessages['register']}</a>
+			</div>
+			<ui:insert name="header" />
+		</div>
+		<div style="height: 80%">
+			<ui:insert name="content" />
+		</div>
+		<div style="height: 10%">
+			<ui:insert name="footer" />
+		</div>
+	</h:body>
+	
+</html>

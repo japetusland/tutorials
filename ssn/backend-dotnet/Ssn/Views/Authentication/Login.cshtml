@@ -1,0 +1,30 @@
+﻿@model Ssn.ViewModels.LoginViewModel
+
+@using (Html.BeginForm())
+{
+    <div>
+        <div style="text-align: center">
+            <h3>@Resources.Messages.InsertYourCredentials</h3>
+        </div>
+        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+        <div class="form-group">
+            @Html.LabelFor(model => model.Email):
+            <div>
+                @Html.EditorFor(model => model.Email, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.Email, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.Password):
+            <div>
+                @Html.EditorFor(model => model.Password, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.Password, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            <input type="submit" value="@Resources.Messages.Login" class="btn btn-success" />
+        </div>
+    </div>
+}

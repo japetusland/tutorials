@@ -1,0 +1,23 @@
+<layout></layout>
+<div style="margin-top:100px;margin-left:10px;">
+	<div>
+		<div [style.width]="contentWidth" style="float:left;margin-bottom:10px;">
+			<div>
+				<mat-card style="padding:10px" class="background-grey-100">
+					<mat-toolbar>
+						<span style="flex:1">{{ user }}</span>
+						<button mat-raised-button color="primary" (click)="navigateHome()">
+							{{myDashboardMessage}}
+						</button>					
+					</mat-toolbar>
+				</mat-card>
+			</div>
+			<div>
+				<post-list [posts]="posts"></post-list>
+			</div>
+		</div>
+		<div [style.width]="friendsWidth" style="float:right">
+			<friends></friends>
+		</div>	
+	</div>
+</div>

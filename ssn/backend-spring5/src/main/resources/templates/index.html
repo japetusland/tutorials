@@ -1,0 +1,33 @@
+<!DOCTYPE HTML>
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:th="http://www.thymeleaf.org">
+
+	<head th:insert="fragments/shared :: head(null, null)"></head>
+	
+	<body style="height:100%" class="container body-content">
+		<div th:insert="fragments/shared :: header(~{::th:block})">
+			<th:block>
+				<h3 style="text-align: center">Simple Social Network</h3>
+			</th:block>
+		</div>
+		
+		<div style="text-align: center;">
+			<hr />
+			<div style="text-align: center;">
+				<a th:href="@{/react/index.html}" target="_blank" class="btn btn-secondary">
+					<img height="24" th:src="@{images/react.svg}" />
+					<span>React</span>
+				</a>
+				<a th:href="@{/angular/index.html}" target="_blank" class="btn btn-secondary">
+					<img height="24" th:src="@{images/angular.svg}" />
+					<span>Angular</span>
+				</a>
+			</div>
+			<hr />
+		</div>
+		
+		<div th:replace="fragments/shared :: footer">
+		</div>
+	</body>
+	
+</html>

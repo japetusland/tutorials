@@ -1,0 +1,16 @@
+﻿@if (Request.IsAuthenticated)
+{
+    <p>@Request.GetOwinContext().Authentication.User.Identity.Name</p>
+    @Html.ActionLink(Resources.Messages.Logout,
+        "SignOut", "Authentication", routeValues: null,
+        htmlAttributes: new { id = "loginLink", @class = "btn btn-dark" })
+}
+else
+{
+    @Html.ActionLink(Resources.Messages.Login,
+        "Login", "Authentication", routeValues: null,
+        htmlAttributes: new { id = "loginLink", @class = "btn btn-warning mr-1" })
+    @Html.ActionLink(Resources.Messages.Register,
+        "Registration", "Authentication", routeValues: null,
+        htmlAttributes: new { id = "registerLink", @class = "btn btn-danger" })
+}

@@ -1,0 +1,29 @@
+<div style="background-color:white;border:1px solid black">
+	<div>
+		<mat-toolbar style="background-color:white">
+			<h1 class="mat-body-2" style="flex:1">
+				{{ post.user }}
+			</h1>
+			<span class="mat-body-2">
+				{{ timestamp }}
+			</span>
+			<span *ngIf="editable" style="margin-left:10px">
+				<mat-icon *ngIf="!editMode" (click)="activateEditMode()">
+					edit
+				</mat-icon>
+				<mat-icon *ngIf="editMode" (click)="exitEditMode()">
+					cancel
+				</mat-icon>
+			</span>
+		</mat-toolbar>
+		<div style="padding:10px" *ngIf="editable && editMode">
+			<post-editor [saveContent]="saveEditedPost" [content]="post.content" [title]="postMessage" [placeholder]="placeholderMessage"></post-editor>
+		</div>
+		<div style="padding:10px;white-space:pre-wrap;" *ngIf="!(editable && editMode)" class="mat-headline">
+			{{ post.content }}
+		</div>
+	</div>
+	<div style="margin:20px;margin-left:100px" class="background-grey-200">
+		<comment-list [comments]="post.comments" [save]="saveComment"></comment-list>
+	</div>
+</div>

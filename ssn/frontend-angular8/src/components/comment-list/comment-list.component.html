@@ -1,0 +1,6 @@
+	<div *ngFor="let comment of comments">
+		<comment [comment]="comment"></comment>
+	</div>
+	<div>
+		<post-editor [saveContent]="save" [placeholder]="placeholderMessage" [title]="commentMessage"></post-editor>
+	</div>

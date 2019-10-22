@@ -1,0 +1,34 @@
+﻿@page
+@model IndexModel
+@{
+    Layout = null;
+}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <title>Simple Social Network</title>
+    <base href="~/Angular" />
+    <meta name="viewport" content="width=device-width">
+    <link href="https://fonts.googleapis.com/css?family=Roboto:300,400,500&display=swap" rel="stylesheet" />
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet" />
+    <link rel="stylesheet" href="~/js/AngularApp/styles.css" />
+    <partial name="_Csrf" />
+</head>
+<body>
+    <div id="initialDataFromBackend" style="display:none;"
+         data-logged-user="@Model.InitialData.LoggedUser"
+         data-friends="@Json.Serialize(Model.InitialData.Friends).ToString()"
+         data-posts="@Json.Serialize(Model.InitialData.Posts).ToString()">
+    </div>
+    <app-root></app-root>
+    <script src="~/js/AngularApp/polyfills-es5.js" nomodule defer></script>
+    <script src="~/js/AngularApp/polyfills-es2015.js" type="module"></script>
+    <script src="~/js/AngularApp/runtime-es2015.js" type="module"></script>
+    <script src="~/js/AngularApp/main-es2015.js" type="module"></script>
+    <script src="~/js/AngularApp/runtime-es5.js" nomodule defer></script>
+    <script src="~/js/AngularApp/main-es5.js" nomodule defer></script>
+</body>
+</html>
+
+

@@ -1,0 +1,33 @@
+﻿@model Ssn.ViewModels.SpaInitialDataViewModel
+@{
+    Layout = null;
+}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <title>Simple Social Network</title>
+    <base href="~/angular" />
+    <meta name="viewport" content="width=device-width">
+    <link href="https://fonts.googleapis.com/css?family=Roboto:300,400,500&display=swap" rel="stylesheet" />
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet" />
+    <link rel="stylesheet" href="~/Scripts/AngularApp/styles.css" />
+    @Html.Partial("~/Views/Shared/_Csrf.cshtml")
+</head>
+<body>
+    <div id="initialDataFromBackend" style="display:none;"
+         data-logged-user="@Json.Encode(Model.LoggedUser)"
+         data-friends="@Json.Encode(Model.Friends)"
+         data-posts="@Json.Encode(Model.Posts)">
+    </div>
+    <app-root></app-root>
+    <script src="~/Scripts/AngularApp/polyfills-es5.js" nomodule defer></script>
+    <script src="~/Scripts/AngularApp/polyfills-es2015.js" type="module"></script>
+    <script src="~/Scripts/AngularApp/runtime-es2015.js" type="module"></script>
+    <script src="~/Scripts/AngularApp/main-es2015.js" type="module"></script>
+    <script src="~/Scripts/AngularApp/runtime-es5.js" nomodule defer></script>
+    <script src="~/Scripts/AngularApp/main-es5.js" nomodule defer></script>
+</body>
+</html>
+
+

@@ -1,0 +1,15 @@
+<mat-card class="background-blue-800">
+	<mat-card-header style="color:white">
+		{{friendsMessage}}
+	</mat-card-header>
+	<mat-divider></mat-divider>
+	<mat-card-content>
+		<mat-nav-list>
+			<mat-list-item *ngFor="let friend of friends">
+				<a matLine (click)="loadPosts(friend)" style="color:yellow">
+					<p class="friends-list-user">{{ friend }}</p>
+				</a>
+			</mat-list-item>
+		</mat-nav-list>
+	</mat-card-content>
+</mat-card>

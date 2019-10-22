@@ -1,0 +1,14 @@
+<layout></layout>
+<div style="padding-top:100px;padding-left:10px;padding-right:10px;">
+	<div>
+		<div [style.width]="contentWidth" style="float:left;margin-bottom:10px;">
+			<mat-card style="padding:10px" class="background-grey-100">
+				<post-editor [saveContent]="addPost" [placeholder]="placeholderMessage" [title]="postMessage"></post-editor>
+			</mat-card>
+			<post-list [posts]="posts"></post-list>
+		</div>
+		<div [style.width]="friendsWidth" style="float:right">
+			<friends></friends>
+		</div>	
+	</div>
+</div>

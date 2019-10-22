@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:f="http://xmlns.jcp.org/jsf/core"
+	xmlns:h="http://xmlns.jcp.org/jsf/html"
+	xmlns:jsf="http://xmlns.jcp.org/jsf"
+	xmlns:ui="http://java.sun.com/jsf/facelets">
+<h:head>
+	<title>Security Api Tutorial</title>
+</h:head>
+
+<h:body>
+	<ui:composition template="layout.xhtml">
+		<ui:define name="header">
+			<h3 style="text-align: center">#{langMessages['RegisterNewUser']}</h3>
+		</ui:define>
+		<ui:define name="content">
+			<h:messages globalOnly="true" />
+			<h:form>
+				<div>
+					<label for="email">Email: </label> 
+					<input type="text"
+						jsf:id="email" jsf:value="#{registration.email}"
+						jsf:required="true"
+						jsf:validator="#{registration.validateEmails}">
+						<f:validator validatorId="giapy.giapy-auth.emailValidator" />
+					</input>
+					<h:message for="email" />
+				</div>
+				<div>
+					<label for="confirmEmail">Confirm Email: </label> 
+					<input
+						type="text" jsf:id="confirmEmail"
+						jsf:value="#{registration.confirmEmail}" jsf:required="true">
+						<f:validator validatorId="giapy.giapy-auth.emailValidator" />				
+					</input>
+					<h:message for="confirmEmail" />
+				</div>
+				<div>
+					<label for="password">Password: </label> 
+					<input type="password"
+						jsf:id="password" jsf:value="#{registration.password}"
+						jsf:required="true"
+						jsf:validator="#{registration.validatePasswords}">
+						<f:validator validatorId="giapy.giapy-auth.passwordValidator" />
+					</input>
+					<h:message for="password" />
+				</div>
+				<div>
+					<label for="confirmPassword">Password: </label> <input
+						type="password" jsf:id="confirmPassword"
+						jsf:value="#{registration.confirmPassword}" jsf:required="true">
+						<f:validator validatorId="giapy.giapy-auth.passwordValidator" />				
+					</input>
+					<h:message for="confirmPassword" />
+				</div>
+				<div>
+					<input type="submit" jsf:id="register"
+						jsf:action="#{registration.register()}" value="#{langMessages['register']}" />
+				</div>
+			</h:form>
+		</ui:define>
+	</ui:composition>
+</h:body>
+</html>

@@ -1,0 +1,34 @@
+﻿<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width">
+    <title>Simple Social Network</title>
+    <link href="~/css/site.css" rel="stylesheet" type="text/css" />
+    <link href="~/lib/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet" type="text/css" />
+    <link href="~/lib/bootstrap/dist/css/bootstrap-grid.min.css" rel="stylesheet" type="text/css" />
+    <link href="~/lib/bootstrap/dist/css/bootstrap-reboot.min.css" rel="stylesheet" type="text/css" />
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    <script src="~/lib/bootstrap/dist/js/bootstrap.min.js"></script>
+</head>
+
+<body style="height:100%" class="container body-content">
+    <div style="height: 10%">
+        <div style="text-align: right;">
+            <partial name="_LoginPartial" />
+        </div>
+    </div>
+
+    <div style="height: 80%">
+        @RenderBody()
+    </div>
+
+    <div style="height: 10%">
+        <footer></footer>
+    </div>
+
+    @RenderSection("Scripts", required: false)
+</body>
+
+</html>

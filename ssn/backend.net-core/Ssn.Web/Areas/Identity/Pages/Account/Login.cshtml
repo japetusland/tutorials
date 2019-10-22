@@ -1,0 +1,29 @@
+﻿@page
+@model LoginModel
+
+@using (Html.BeginForm())
+{
+    <div>
+        <div style="text-align: center">
+            <h3>@Ssn.Web.Resources.Messages.InsertYourCredentials</h3>
+        </div>
+        <div asp-validation-summary="All" class="text-danger"></div>
+        <div class="form-group">
+            <label asp-for="Input.Email"></label>
+            <input asp-for="Input.Email" class="form-control" />
+            <span asp-validation-for="Input.Email" class="text-danger"></span>
+        </div>
+        <div class="form-group">
+            <label asp-for="Input.Password"></label>
+            <input asp-for="Input.Password" class="form-control" />
+            <span asp-validation-for="Input.Password" class="text-danger"></span>
+        </div>
+        <div class="form-group">
+            <input type="submit" value="@Ssn.Web.Resources.Messages.Login" class="btn btn-success" />
+        </div>
+    </div>
+}
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

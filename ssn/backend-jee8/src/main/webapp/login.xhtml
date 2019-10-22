@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui:composition
+	xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:f="http://xmlns.jcp.org/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:jsf="http://xmlns.jcp.org/jsf"
+	template="layout.xhtml">
+
+	<ui:define name="header">
+		<h3 style="text-align: center">#{langMessages['InsertYourCredentials']}</h3>
+	</ui:define>
+
+	<ui:define name="content">
+		<h:form>
+			<div class="form-group">
+				<label for="email">Email:</label>
+				<input type="text" jsf:id="email" class="form-control"
+					jsf:value="#{login.email}" jsf:required="true">
+					<f:validator validatorId="com.giapyland.ssn.emailValidator" />
+				</input>
+				<h:message for="email" errorClass="text-danger" />
+			</div>
+			<div class="form-group">
+				<label for="password">Password:</label>
+				<input type="password" class="form-control"
+					jsf:id="password" jsf:value="#{login.password}" jsf:required="true">
+					<f:validator validatorId="com.giapyland.ssn.passwordValidator" />
+				</input>
+				<h:message for="password" errorClass="text-danger" />
+			</div>
+			<div class="form-group">
+				<input type="submit" jsf:id="login" jsf:action="#{login.login}"
+					value="#{langMessages['login']}" class="btn btn-success">
+					<f:param name="new" value="true" />
+				</input>
+			</div>
+			<div class="form-group">
+				<h:messages globalOnly="true" errorClass="alert alert-danger" />
+			</div>
+		</h:form>
+	</ui:define>
+
+</ui:composition>

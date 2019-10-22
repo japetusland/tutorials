@@ -1,0 +1,18 @@
+﻿<script>
+        @functions {
+            public string TokenHeaderValue()
+            {
+                string cookieToken, formToken;
+                AntiForgery.GetTokens(null, out cookieToken, out formToken);
+                return cookieToken + ":" + formToken;
+            }
+        }
+
+        XMLHttpRequest.prototype.realSend = XMLHttpRequest.prototype.send;
+        var newSend = function (vData) {
+            this.setRequestHeader('@Global.CSRF_KEY', '@TokenHeaderValue()');
+            this.realSend(vData);
+        };
+        XMLHttpRequest.prototype.send = newSend;
+</script>
+

@@ -1,0 +1,16 @@
+<form style="padding:10px" class="background-grey-100">
+	<mat-form-field style="width:100%">
+		<textarea
+		  [(ngModel)]="content"
+		  name="content"
+		  placeholder="{{ placeholder }}"
+		  matInput
+		  cdkTextareaAutosize
+		  cdkAutosizeMinRows="1"
+		  cdkAutosizeMaxRows="8"
+		  resizeToFitContent="true"
+		></textarea>
+	  </mat-form-field>
+
+	  <button mat-raised-button color="primary" (click)="save()">{{ buttonLabel }}</button>
+</form>

@@ -1,0 +1,220 @@
+HOW TO CREATE AN APP IN ASP.NET WEB APPLICATION WITH SINGLE USER AUTHENTICATION AND ROLES WITH WEB API SUPPORT
+	- Created new project using template "ASP.NET Web Application (.Net Framework)"
+	- Choose "MVC", check "Web API", click on "Change Authentication" button and select "Individual User Accounts"
+
+	HOWTO add ROLES SUPPORT TO IDENTITY
+		(tip: to respect MVC directory structure move Identity's ViewModels to a new folder named ViewModels)
+		- move class Models\IdentityModels to a new file in DAL\ApplicationDbContext
+		- create your own DbContext extending ApplicationDbCOntext
+		- in class ApplicationRoleManager in App_Start\IdentifyConfig method Create change ApplicationDbContext with your own DbContext
+		- add class Commons\Application with constants for needed roles (for example ROLE_ADMIN="Admin" and ROLE_USER="User")
+
+	HOWTO add Roles to Authentication
+		default Individual User Authentication does not use Roles, so no roles are in the data store and no user have a role
+		- create roles (for example "User" and "Admin") in data store using DropCreateDatabaseAlways, DropCreateDatabaseIfModelChanges or migration sql scripts
+			I show here just DropCreateDatabaseAlways:
+			create folder DAL\Utilities and add a class extending DropCreateDatabaseAlways<ApplicationDbContext>
+				public class ApplicationDBInitializatorAlways : DropCreateDatabaseAlways<ApplicationDbContext>
+				{
+					protected override void Seed(ApplicationDbContext context)
+					{
+						RoleManager<IdentityRole> roleManager = new RoleManager<IdentityRole>(new RoleStore<IdentityRole>(context));
+						roleManager.Create(new IdentityRole(Application.ROLE_ADMIN));
+						roleManager.Create(new IdentityRole(Application.ROLE_USER));
+						base.Seed(context);
+					}
+				}
+			add Database.SetInitializer(new ApplicationDBInitializatorAlways());  in class Models\IdentityModels.ApplicationDbContext constructor
+		- any new user created must be added to a role, for example using a default role as "User"
+			use roleManager in class Controller\AccountController method Register
+					public async Task<ActionResult> Register(RegisterViewModel model)
+					{
+						if (ModelState.IsValid)
+						{
+							try
+							{
+								var user = new ApplicationUser { UserName = model.Email, Email = model.Email };
+								var result = await UserManager.CreateAsync(user, model.Password);
+								if (result.Succeeded)
+								{
+									var addToRoleResult = await UserManager.AddToRoleAsync(user.Id, Application.ROLE_USER);
+									if (!addToRoleResult.Succeeded)
+										throw new Exception("Error adding user to role, please contact Support");
+									await SignInManager.SignInAsync(user, isPersistent: false, rememberBrowser: false);
+									// For more information on how to enable account confirmation and password reset please visit https://go.microsoft.com/fwlink/?LinkID=320771
+									// Send an email with this link
+									// string code = await UserManager.GenerateEmailConfirmationTokenAsync(user.Id);
+									// var callbackUrl = Url.Action("ConfirmEmail", "Account", new { userId = user.Id, code = code }, protocol: Request.Url.Scheme);
+									// await UserManager.SendEmailAsync(user.Id, "Confirm your account", "Please confirm your account by clicking <a href=\"" + callbackUrl + "\">here</a>");
+									return RedirectToAction("Index", "Home");
+								}
+								AddErrors(result);
+							}
+							catch (Exception ex)
+							{
+								AddErrors(new IdentityResult("User creation fails: " + ex.Message));
+								Application.Logger.Error("User creation fails: " + ex.Message);
+								return View(model);
+							}
+						}
+						// If we got this far, something failed, redisplay form
+						return View(model);
+					}
+		Test:
+			protect some controller method using [Authorize(Roles=Application.ROLE_USER)] will result in can access
+				for example Controller\HomeController method About
+			protect some controller method using [Authorize(Roles=Application.ROLE_ADMIN)] will result in cannot access (redirection to the login page...)
+				for example Controller\HomeController method Contact
+
+	HOWTO add EF
+		- (EF support is just installed because of "Individual User Authentication" chosed in solution template)
+		- follow just if separation of db context between app data and identity data is needed
+		- add a dedicated DbContext for data application ApplicationDataDbContext extending DbContext : base("APP DATA CONNECTION NAME FROM WEB.CONFIG")
+		- put in this DbContext all yours application data models
+		- Application Data Dao will use this db context
+
+	HOWTO add Logging (NLog)
+		- install with NuGet NLog package
+		- add xml file nlog.config in project root, follows an example with rolling daily files (max 10 of max 512KB per day) with console and visualstudio debug console
+			<?xml version="1.0" encoding="utf-8" ?>
+			<nlog xmlns="http://www.nlog-project.org/schemas/NLog.xsd"
+				  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+				  autoReload="true"
+				  internalLogLevel="Info"
+				  internalLogFile="${basedir}\logs\internal-nlog.txt">
+
+			  <!-- the targets to write to -->
+			  <targets>
+				<target name="file" xsi:type="File"
+						fileName="${basedir}\logs\nlog-${shortdate}.log"
+						archiveFileName="${basedir}\logs\archives\${shortdate}\log.{##}.txt"
+						archiveEvery="Day"
+						archiveAboveSize="512000"
+						archiveNumbering="Rolling"
+						maxArchiveFiles="10"
+						concurrentWrites="true"
+						keepFileOpen="false"
+						encoding="UTF-8" />
+				<target xsi:type="Console" name="console" />
+				<!-- debug console for VS -->
+				<target xsi:type="Debugger" name="debug_console" />
+			  </targets>
+
+			  <!-- rules to map from logger name to target -->
+			  <rules>
+				<logger name="YOUR_NAMESPACE.*" minlevel="Trace" maxlevel="Fatal"
+						writeTo="file, console, debug_console" final="true" />
+				<logger name="Microsoft.*" minlevel="Warn"
+						writeTo="file, console, debug_console" final="true" />
+				<logger name="System.*" minlevel="Warn"
+						writeTo="file, console, debug_console" final="true" />
+				<logger name="*" minlevel="Warn"
+						writeTo="file, console, debug_console" final="true" />
+			  </rules>
+			</nlog>
+		- add  public singleton Logger  in Commons\Application  (using NLog;)
+			private static Logger logger;
+			public static Logger Logger
+			{
+				get
+				{
+					if (logger == null)
+						logger = LogManager.GetCurrentClassLogger();
+					return logger;
+				}
+				set
+				{
+					logger = value;
+				}
+			}
+		- initialize the singleton at application startup in class Startup method Configuration as first instruction:
+			Application.Logger.Info("Logger instatiated");
+		Test:
+			add Application.Logger.Info("Configuring Web Application...");  in class Startup method Configuration
+				start application, you will see following message in Output VisualStudio Output View:
+					YYYY-mm-DD hh:MM:ss.xxxx|INFO|YOUR_NAMESPACE.Commons.Application|Configuring Web Application...
+				same message in file nlog-YYYY-mm-DD.log in a just created folder in your project direcotry named logs where must find file internal-nlog.txt too
+
+	HOW TO add validation
+		- in viewmodels use to map view's input form annotations may be enough for most cases, otherwise advanced controls can be achieved in frontend (js) or in controller
+			an example using viewmodel's annotation is about a passwordd and its confirmation fileds in a generic sing up view: they are required, must be equals and must have length between 7 and 30 chars:
+			[Required(ErrorMessage = "Password is required")]
+			[StringLength(30, ErrorMessage = "The {0} must be between {1} and {2} characters", MinimumLength = 7)]
+			[DataType(DataType.Password)]
+			public string Password { get; set; }
+
+			[Required(ErrorMessage = "Confirm Password is required")]
+			[StringLength(30, ErrorMessage = "The {0} must be between {1} and {2} characters", MinimumLength = 7)]
+			[DataType(DataType.Password)]
+			[Compare("Password")]
+			public string ConfirmPassword { get; set; }
+		
+	HOW TO add external ng and react frontends
+		- add needed instructions in Buils-Event -> Post-Build Execute:
+			echo "Build angular frontend"
+			cd "$(SolutionDir)\..\frontend-angular7"
+			call ng build --prod
+			echo "Copying angular files"
+			cd dist
+			xcopy /e /y /i "*.*" "$(TargetDir)\wwwroot\"
+
+			echo "Build react frontend"
+			mkdir "$(TargetDir)\wwwroot\frontend-react"
+			cd "$(SolutionDir)\..\frontend-react16"
+			call npm run build
+			echo "Copying react files"
+			cd build
+			xcopy /e /y /i "*.*" "$(TargetDir)\wwwroot\frontend-react\"
+
+			echo "Project builded"
+			echo "$(TargetDir)"
+
+	HOW TO add Localization
+		- add new Folder Resources in project root
+		- add new resource file Resource\Filename.resx (Filename can be any name, for example: Errors, Messages, ...) and et their properties as follow:
+			Custom Tool= PublicResXFileCodeGenerator
+			Custom Tool Namespace= Resources
+		- in these files set the application dictionary of the default language, for any other language create a transalated dictionary with same name adding the culture as follow:
+			for example if Italian language is needed add Resources\Filename.it.resx
+		- add new resources files  Resources\Errors.resx, Resources\Errors.it.resx, Resources\Messages.resx, Resources\Messages.it.resx
+		- set their properties as follow:
+			Custom Tool= PublicResXFileCodeGenerator
+			Custom Tool Namespace= Resources
+		- add class Commons\GlobalizationActivator
+			public class GlobalizationActivator : IControllerActivator
+			{
+				private string FallBackLanguage = "en-US";
+				public IController Create(RequestContext requestContext, Type controllerType)
+				{
+					if (requestContext.HttpContext.Request.UserLanguages != null)
+					{
+						FallBackLanguage = requestContext.HttpContext.Request.UserLanguages[0] ?? FallBackLanguage;
+					}
+
+					Thread.CurrentThread.CurrentCulture = new CultureInfo(FallBackLanguage);
+					Thread.CurrentThread.CurrentUICulture = new CultureInfo(FallBackLanguage);
+
+					return DependencyResolver.Current.GetService(controllerType) as IController;
+				}
+			}
+		- add ControllerBuilder.Current.SetControllerFactory(new DefaultControllerFactory(new GlobalizationActivator()));  in  class Startup method Configuration
+		- in any view's usercontrol use @Resources.RESOURCE_FILENAME.KEY instead of values
+		- in ViewModels annotations:
+			for display name
+				[Display(Name = "RememberMe", ResourceType = typeof(Resources.Account))]
+			for validations
+				[EmailAddress(ErrorMessageResourceName = "Email_InValid", ErrorMessageResourceType = typeof(Resources.Account))]
+				where Email_InValid is a dictionary key of the Account resource file
+			in Controller's Actions any messages created with Resources will be localized
+
+    HOW TO ADD DEPENDENCY INJECTION
+        - install package Unity.Mvc5 (the installation will create the class App_Start\UnityConfig)
+        - add UnityConfig.RegisterComponents(); in class Global method Application_Start, after AreaRegistration.RegisterAllAreas();
+        - in App_Start\UnityConfig register the AuthManager so it will be injectable in other classes
+            container.RegisterType<AuthManager>();
+        - inject authManager in a controller:
+            private AuthManager authManager { get; set; }
+            public AuthController(AuthManager authManager)
+            {
+                this.authManager = authManager;
+            }

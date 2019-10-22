@@ -1,0 +1,17 @@
+﻿@inject Microsoft.AspNetCore.Antiforgery.IAntiforgery Xsrf
+
+<script>
+    @functions {
+        public string TokenHeaderValue()
+        {
+            return Xsrf.GetAndStoreTokens(Context).RequestToken;
+        }
+    }
+
+    XMLHttpRequest.prototype.realSend = XMLHttpRequest.prototype.send;
+    var newSend = function (vData) {
+        this.setRequestHeader('@Common.CSRF_KEY', '@TokenHeaderValue()');
+        this.realSend(vData);
+    };
+    XMLHttpRequest.prototype.send = newSend;
+</script>
