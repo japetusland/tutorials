@@ -1,0 +1,2 @@
+This article describes the JEE 8 implementation of the multi page web application for Simple Social Network project.
+If you want to read more, please visit https://www.japetusland.org/Articles/Article_13
