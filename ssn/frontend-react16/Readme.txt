@@ -1,0 +1,2 @@
+This article describes the implementation in React 16 of the single page application for Simple Social Network project.
+If you want to read more, please visit https://www.japetusland.org/Articles/Article_17

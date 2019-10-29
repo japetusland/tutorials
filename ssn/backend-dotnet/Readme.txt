@@ -1,0 +1,2 @@
+This article describes the implementation in Asp.Net MVC 5 of the multi page web application for Simple Social Network project.
+If you want to read more, please visit https://www.japetusland.org/Articles/Article_16
